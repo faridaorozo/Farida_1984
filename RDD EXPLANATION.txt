@@ -1,0 +1,66 @@
+1,3,56,78,34,78,3,6,23,67,1,9------F.TXT
+
+F.txt is loaded in three blocks :B1(D1),B2(D2),B3(D3) 
+
+SPARK:
+
+1. val number= sc.textFile('/F.TXT')
+
+1,3,56,78----B1------will be loaded in memory of D1----b1
+
+34,78,3,6----B2-------will be loaded in memory of D2---b2
+
+23,67,1,9----B3-------will be loaded in memory of D3---b3
+
+{b1,b2,b3}======RDD number: collection of partitoned/distributed data in memory 
+
+{number=b1,b2,b3---memory}
+2. val filter1 = number.map(logic to find number <10)
+
+b1---1,3----b4
+b2---3,6---b5
+b3---1,9---b6
+
+filter1===={b4,b5,b6}--RDD 
+
+Map reduce:
+
+Job 1---input file is in disk of datanodes---read the input file---mapper(processing in memory)--output of mapper(disk in LFS)--REDUCER---PROCESS data in memory---output of reducer is stored in hdfs.
+
+disk--memory--disk--memory---disk
+
+
+Spark:
+
+disk---memory---all the operations in memory---final output will be stored in disk(hdfs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+rdd=sparkContext.parallelize([1,2,3,4,5])
+rddCollect = rdd.collect()
+print("Number of Partitions: "+str(rdd.getNumPartitions()))
+print("Action: First element: "+str(rdd.first()))
+print(rddCollect)
+
+B4,B5,B6----RDD filter---again stored in memory---
+
+F.TXT------>number------>filter  DAG OR LINEAGE
+
+
+
